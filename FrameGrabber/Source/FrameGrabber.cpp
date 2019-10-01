@@ -88,7 +88,7 @@ class WriteThread : public Thread
 {
 public:
     WriteThread()
-        : Thread ("WriteThread"), framePath(), timestampFile(), frameCounter(0), experimentNumber(1), recordingNumber(0), isRecording(false)
+        : Thread ("WriteThread"), frameCounter(0), experimentNumber(1), recordingNumber(0), framePath(), timestampFile(), isRecording(false)
     {
 		frameBuffer.clear();
 
@@ -208,7 +208,7 @@ public:
     void run() override
     {
 		FrameWithTS* frame_ts;
-		int imgQuality;
+		//int imgQuality;
 		String fileName;
 		String filePath;
 		String line;
@@ -273,10 +273,10 @@ private:
 
 
 FrameGrabber::FrameGrabber()
-    : GenericProcessor("Frame Grabber"), camera(NULL), currentFormatIndex(-1),
-	  frameCounter(0), Thread("FrameGrabberThread"), isRecording(false), framePath(""),
-	  imageQuality(25), colorMode(ColorMode::GRAY), writeMode(ImageWriteMode::RECORDING),
-	  resetFrameCounter(false), dirName("frames")
+    : GenericProcessor("Frame Grabber"), Thread("FrameGrabberThread"), camera(NULL), 
+	  frameCounter(0), isRecording(false), framePath(""),
+	  imageQuality(90), colorMode(ColorMode::GRAY), writeMode(ImageWriteMode::RECORDING),
+	  resetFrameCounter(true), dirName("frames"), currentFormatIndex(-1)
 
 {
     setProcessorType(PROCESSOR_TYPE_SOURCE);
@@ -404,7 +404,7 @@ void FrameGrabber::run()
 					writeThread->addFrame(&frame, srcTS, swTS, imgQuality);
 				}
 
-				cv::imshow("FrameGrabber", frame);
+			  cv::imshow("FrameGrabber", frame);
 				cv::waitKey(1);
 
 				frameCounter++;
